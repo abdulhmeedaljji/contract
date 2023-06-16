@@ -1,0 +1,274 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> nupco</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    
+    <style>
+      .navbar-custom {
+        background-color: #7fb3d5; /* use your desired color value here */
+      }
+
+      .dt-buttons {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+  
+      .dt-button {
+        margin-right: 15px;
+      }
+
+      .table_res{
+        width: 90%;
+        float:right;
+        margin-right: 20px;
+      }
+
+      .buttons_ex{
+        float:left;
+        width: 10%;
+
+      }
+    </style>  
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'Home'%}"><img src="{% static 'img/IMG2.png' %}" style="width:75px;" >   </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'Home' %}">Home</a>
+              </li>
+              
+             {% if user.is_authenticated %}
+             <li class="nav-item">
+               <a class="nav-link" href="">{{request.user}}</a>
+             </li>
+
+             <li class="nav-item">
+               <a class="nav-link" href="{% url 'logout_view' %}">logout</a>
+             </li>
+
+           {% else %}
+           <li class="nav-item">
+             <a class="nav-link" href="{% url 'login' %}">log in</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="{% url 'singup' %}">sing up</a>
+           </li>
+       
+         {% endif%} 
+
+
+     
+         
+         
+       
+          
+            </ul>
+          </div>
+        </div>
+    </nav>
+
+
+    
+    <div class="container" style="margin:25px;">
+      <div class="row text-center">
+        <h5> contract list </h5>
+      </div>  
+    </div>  
+
+
+
+    
+   <div class="container buttons_ex"  >
+      <div class="row text-center">
+        <h3> tracking  </h3>    
+      </div> 
+
+      <div class="row text-center" style="padding-top:25px;">
+        <a href="{% url 'Manger_page' %}" style="text-decoration: none;" > tracking report </a>
+      </div>  
+    </div>
+
+
+
+
+    <div class="container table_res">
+      <div class="row">
+        <div class="table-responsive">
+
+            <table id="example" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>NUPCO PO</th>
+                        <th>PO_item_number</th>
+                        <th>nupco_Gen_code</th>
+                        <th>nupco_Trade_code</th>
+                        <th>desscription</th>
+                        <th>Order_Qty</th>
+                        <th>available_Qty</th>
+                        <th>ASN Creation</th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                {% for o in orders %}           
+                    <tr>
+                        <td>{{o.nupco_po}}</td>
+                        <td>{{o.PO_item_number}}</td>
+                        <td>{{o.nupco_Gen_code}}</td>
+                        <td>{{o.nupco_Trade_code}}</td>
+                        <td>{{o.desscription}}</td>
+                        <td>{{o.Ordeer_Qty}}</td>
+                        <td>{{o.available_Qty}}</td>
+
+                        <td>
+                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="bi bi-arrow-right-square" ></i>
+                        </a>
+
+                          <a href="" style="padding:3px;">
+                            <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                            <i class="bi bi-bag-check"></i>
+                          </a>  
+                        </td>
+                    </tr>
+                {% endfor %}  
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <th>NUPCO PO</th>
+                    <th>PO_item_number</th>
+                    <th>nupco_Gen_code</th>
+                    <th>nupco_Trade_code</th>
+                    <th>desscription</th>
+                    <th>Order_Qty</th>
+                    <th>available_Qty</th>
+                    <th>submit</th>
+
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+
+      </div>  
+
+
+    </div>  
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">available quantity</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form method="POST">
+                    {% csrf_token %}
+                   <div class="form-group mb-3">
+                       <label class="form-label" for="form3Example4cdg">available quantity </label>
+                       <input id="inputEmail" type="number" name="available" placeholder="" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4"  min="1" >
+                   </div>
+                   
+                   <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Save changes</button>
+              
+               </form>
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+      <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel1">info delivery</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+              <form method="POST" action="{% url 'actual_date' %}" >
+                  {% csrf_token %}
+                 <div class="form-group mb-3">
+                     <label class="form-label" for="form3Example4cdg"> Actual delivery date</label>
+                     <input id="inputEmail" type="date" name="Actual_date" placeholder="" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4"  min="1" >
+                 </div>
+
+                 <div class="form-group mb-3 ">
+                  <center>
+                    <button type="button" class="btn btn-secondary ">Attachment</button>
+                  </center>
+                 </div>
+
+                 
+                 <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Save changes</button>
+            
+             </form>
+          
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+      </div>
+  </div>
+
+
+
+    <script>
+      $(document).ready(function() {
+        $('#example').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+        } );
+      });
+    </script>  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+  
+    <!-- DataTables Buttons JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>
